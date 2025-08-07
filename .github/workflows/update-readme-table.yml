@@ -1,0 +1,121 @@
+name: Update README Model Table
+
+on:
+  push:
+    paths:
+      - 'models/providers/**/*.md'
+      - 'scripts/generate_readme_table.py'
+  pull_request:
+    paths:
+      - 'models/providers/**/*.md'
+      - 'scripts/generate_readme_table.py'
+  workflow_dispatch:  # 手動実行可能
+
+permissions:
+  contents: write  # ファイル書き込み権限
+
+jobs:
+  update-readme-table:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install PyYAML
+
+    - name: Run README table generator
+      run: |
+        python scripts/generate_readme_table.py
+
+    - name: Check for changes
+      id: changes
+      run: |
+        if git diff --quiet README.md; then
+          echo "changed=false" >> $GITHUB_OUTPUT
+          echo "No changes to README.md"
+        else
+          echo "changed=true" >> $GITHUB_OUTPUT
+          echo "Changes detected in README.md"
+        fi
+
+    - name: Display changes (for debugging)
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        echo "=== Git status ==="
+        git status
+        echo "=== Git diff ==="
+        git diff README.md
+
+    - name: Commit and push changes
+      if: steps.changes.outputs.changed == 'true' && github.event_name == 'push'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add README.md
+        git commit -m "🤖 自動更新: README.mdのモデルテーブルを更新
+
+        🔄 自動生成されたテーブルを更新しました
+        📊 更新対象: モデル一覧テーブル
+        🤖 実行者: GitHub Actions
+        
+        🤖 Generated with [Claude Code](https://claude.ai/code)
+        
+        Co-Authored-By: Claude <noreply@anthropic.com>"
+        git push
+
+    - name: Add PR comment (for pull requests)
+      if: steps.changes.outputs.changed == 'true' && github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const comment = `## 🤖 自動更新通知
+          
+          このPRによってREADME.mdのモデルテーブルが自動更新されます。
+          
+          📊 **変更内容**
+          - モデル一覧テーブルの自動更新
+          - 新しいモデル情報の追加または既存モデル情報の更新
+          
+          ✅ **確認事項**
+          - [ ] テーブルの内容が正確であることを確認
+          - [ ] リンクが正しく機能することを確認
+          - [ ] 価格情報が最新であることを確認
+          
+          > 💡 このコメントは自動生成されました`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+
+    - name: Summary
+      run: |
+        echo "## 実行結果 📊" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ steps.changes.outputs.changed }}" == "true" ]; then
+          echo "✅ README.mdのテーブルを更新しました" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 更新内容" >> $GITHUB_STEP_SUMMARY
+          echo "- モデル一覧テーブルの自動更新" >> $GITHUB_STEP_SUMMARY
+          echo "- ランク順ソートとフォーマット適用" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "ℹ️ README.mdに変更はありませんでした" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 統計情報" >> $GITHUB_STEP_SUMMARY
+        echo "実行時刻: $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "Python バージョン: $(python --version)" >> $GITHUB_STEP_SUMMARY
