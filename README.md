@@ -242,3 +242,14 @@ MIT License - 詳細は [LICENSE](LICENSE) を参照
 | Mistral: Devstral Medium | Mistral | $0.40/$2.00/M | ソフトウェア開発支援 | コーディング特化, 高精度... |
 | DeepSeek: R1 0528 (free) | DeepSeek | 無料 | 顧客サポート／FAQ自動応答, 社内ナレッジ検索／RAG, 会議メモ&アクション抽出 | 高性能推論, 無料... |
 <!-- AUTO_GENERATED_TABLE_END -->
+
+
+## モデル一覧
+
+<!-- AUTO_GENERATED_TABLE_START -->
+| モデル名 | プロバイダー | 価格 | 主要業務カテゴリ | 特徴 |
+|---------|------------|------|-----------------|------|
+| OpenAI: gpt-oss-120b | OpenAI | $0.20/$0.80/M | 顧客サポート／FAQ自動応答, 社内ナレッジ検索／RAG, 会議メモ&アクション抽出 | 高推論, エージェント... |
+| Mistral: Devstral Medium | Mistral | $0.40/$2.00/M | ソフトウェア開発支援 | コーディング特化, 高精度... |
+| DeepSeek: R1 0528 (free) | DeepSeek | 無料 | 顧客サポート／FAQ自動応答, 社内ナレッジ検索／RAG, 会議メモ&アクション抽出 | 高性能推論, 無料... |
+<!-- AUTO_GENERATED_TABLE_END -->
