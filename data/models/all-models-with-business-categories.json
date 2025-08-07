@@ -1,0 +1,231 @@
+{
+  "metadata": {
+    "last_updated": "2025-08-07",
+    "total_models": 51,
+    "data_source": "OpenRouter.ai",
+    "collection_range": "上位51モデル（GPT-4.1 Nanoまで）"
+  },
+  "business_categories": {
+    "customer_support": {
+      "name": "顧客サポート／FAQ 自動応答",
+      "key_metrics": ["正確性", "低レイテンシ", "コスト"],
+      "tasks": ["チャットボット", "メール一次回答", "問い合わせ分類"]
+    },
+    "sales_email": {
+      "name": "営業メール & 見込み客フォロー",
+      "key_metrics": ["出力品質", "営業テンプレ学習容易性"],
+      "tasks": ["パーソナライズ営業文生成", "CRM 書き込み自動化"]
+    },
+    "marketing_content": {
+      "name": "マーケティングコンテンツ制作",
+      "key_metrics": ["クリエイティブ度", "トンマナ調整"],
+      "tasks": ["ブログ下書き", "SNS 投稿案", "広告コピー"]
+    },
+    "software_development": {
+      "name": "ソフトウェア開発支援",
+      "key_metrics": ["コード精度", "コンテキスト長"],
+      "tasks": ["コード生成／補完", "バグ修正提案", "テストケース生成"]
+    },
+    "data_analysis": {
+      "name": "データ分析 & BI",
+      "key_metrics": ["数表理解力", "数式処理"],
+      "tasks": ["SQL 生成", "ダッシュボード解説", "外れ値説明"]
+    },
+    "knowledge_search": {
+      "name": "社内ナレッジ検索／RAG",
+      "key_metrics": ["長文コンテキスト", "拡張性"],
+      "tasks": ["社内ドキュメント Q&A", "ポリシー検索"]
+    },
+    "legal_document": {
+      "name": "法務ドキュメントレビュー",
+      "key_metrics": ["正確性", "説明可能性", "機密保持"],
+      "tasks": ["契約条項チェック", "リスク抽出", "要約"]
+    },
+    "finance_planning": {
+      "name": "財務・経営企画",
+      "key_metrics": ["数字整合性", "コンフィデンス出力"],
+      "tasks": ["損益予測コメント生成", "IR FAQ 草案"]
+    },
+    "hr_recruitment": {
+      "name": "人事・採用",
+      "key_metrics": ["バイアス低減", "個人情報保護"],
+      "tasks": ["履歴書要約", "面接フィードバック下書き", "求人票作成"]
+    },
+    "training_elearning": {
+      "name": "研修・eラーニング",
+      "key_metrics": ["教育向けトーン", "多言語"],
+      "tasks": ["コース教材作成", "クイズ自動生成", "学習進捗 Q&A"]
+    },
+    "meeting_memo": {
+      "name": "会議メモ & アクション抽出",
+      "key_metrics": ["音声入力", "リアルタイム性"],
+      "tasks": ["音声→議事録", "To-Do 抽出", "翻訳"]
+    },
+    "multilingual": {
+      "name": "多言語ローカライゼーション",
+      "key_metrics": ["多言語精度", "用語集適用"],
+      "tasks": ["ウェブ／アプリ UI 翻訳", "法的文書翻訳"]
+    },
+    "creative_design": {
+      "name": "クリエイティブ設計・ブレスト",
+      "key_metrics": ["マルチモーダル", "発散思考"],
+      "tasks": ["商品ネーミング", "ストーリーボード", "UI コピー案"]
+    },
+    "supply_chain": {
+      "name": "サプライチェーン & 需要予測",
+      "key_metrics": ["時系列理解", "数値根拠"],
+      "tasks": ["受注予測コメント", "在庫調整提案"]
+    },
+    "it_operation": {
+      "name": "IT オペレーション／インシデント対応",
+      "key_metrics": ["レイテンシ", "専門用語理解"],
+      "tasks": ["障害ログ要約", "解決手順提案", "ステータス報告"]
+    }
+  },
+  "models": [
+    {
+      "id": "openai-gpt-oss-120b",
+      "rank": 1,
+      "name": "OpenAI: gpt-oss-120b",
+      "provider": "OpenAI",
+      "parameters": "117B",
+      "context_length": "128K",
+      "pricing": {
+        "input_price": 0.20,
+        "output_price": 0.80,
+        "currency": "USD",
+        "unit": "1M tokens",
+        "free": false
+      },
+      "features": ["高推論", "エージェント"],
+      "business_categories": ["customer_support", "sales_email", "data_analysis", "knowledge_search", "it_operation"],
+      "category_ratings": {
+        "customer_support": 4.5,
+        "sales_email": 4.2,
+        "data_analysis": 4.3,
+        "knowledge_search": 4.4,
+        "it_operation": 4.1
+      },
+      "japanese_performance": 4.3
+    },
+    {
+      "id": "openai-gpt-oss-20b-free",
+      "rank": 2,
+      "name": "OpenAI: gpt-oss-20b (free)",
+      "provider": "OpenAI", 
+      "parameters": "21B",
+      "context_length": "128K",
+      "pricing": {
+        "input_price": 0,
+        "output_price": 0,
+        "currency": "USD",
+        "unit": "1M tokens",
+        "free": true
+      },
+      "features": ["完全無料"],
+      "business_categories": ["customer_support", "sales_email", "marketing_content", "training_elearning"],
+      "category_ratings": {
+        "customer_support": 3.8,
+        "sales_email": 3.5,
+        "marketing_content": 3.7,
+        "training_elearning": 4.0
+      },
+      "japanese_performance": 3.6
+    },
+    {
+      "id": "openai-gpt-oss-20b",
+      "rank": 3,
+      "name": "OpenAI: gpt-oss-20b",
+      "provider": "OpenAI",
+      "parameters": "21B",
+      "context_length": "128K",
+      "pricing": {
+        "input_price": 0.10,
+        "output_price": 0.40,
+        "currency": "USD",
+        "unit": "1M tokens",
+        "free": false
+      },
+      "features": ["低価格版"],
+      "business_categories": ["customer_support", "sales_email", "marketing_content", "training_elearning"],
+      "category_ratings": {
+        "customer_support": 3.8,
+        "sales_email": 3.5,
+        "marketing_content": 3.7,
+        "training_elearning": 4.0
+      },
+      "japanese_performance": 3.6
+    },
+    {
+      "id": "anthropic-claude-opus-4-1",
+      "rank": 4,
+      "name": "Anthropic: Claude Opus 4.1",
+      "provider": "Anthropic",
+      "parameters": "N/A",
+      "context_length": "200K",
+      "pricing": {
+        "input_price": 15.00,
+        "output_price": 75.00,
+        "currency": "USD",
+        "unit": "1M tokens",
+        "free": false
+      },
+      "features": ["コーディング強化"],
+      "business_categories": ["software_development", "data_analysis", "legal_document", "knowledge_search"],
+      "category_ratings": {
+        "software_development": 4.8,
+        "data_analysis": 4.6,
+        "legal_document": 4.5,
+        "knowledge_search": 4.4
+      },
+      "japanese_performance": 4.2
+    },
+    {
+      "id": "mistral-devstral-medium",
+      "rank": 21,
+      "name": "Mistral: Devstral Medium",
+      "provider": "Mistral",
+      "parameters": "276M",
+      "context_length": "131K",
+      "pricing": {
+        "input_price": 0.40,
+        "output_price": 2.00,
+        "currency": "USD",
+        "unit": "1M tokens",
+        "free": false
+      },
+      "features": ["高性能コード"],
+      "business_categories": ["software_development", "it_operation", "data_analysis"],
+      "category_ratings": {
+        "software_development": 4.9,
+        "it_operation": 4.2,
+        "data_analysis": 4.0
+      },
+      "japanese_performance": 3.8
+    },
+    {
+      "id": "deepseek-r1-0528-free",
+      "rank": 51,
+      "name": "DeepSeek: R1 0528 (free)",
+      "provider": "DeepSeek",
+      "parameters": "92.1B",
+      "context_length": "164K",
+      "pricing": {
+        "input_price": 0,
+        "output_price": 0,
+        "currency": "USD",
+        "unit": "1M tokens",
+        "free": true
+      },
+      "features": ["高性能無料", "推論特化"],
+      "business_categories": ["software_development", "data_analysis", "it_operation", "knowledge_search"],
+      "category_ratings": {
+        "software_development": 4.5,
+        "data_analysis": 4.7,
+        "it_operation": 4.3,
+        "knowledge_search": 4.2
+      },
+      "japanese_performance": 4.0
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/kimurataiyou/all-model-list/schema/models.json",
+  "title": "LLM Models with Business Categories",
+  "description": "Schema for LLM model information with Japanese business category ratings",
+  "type": "object",
+  "required": ["metadata", "business_categories", "models"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["last_updated", "total_models", "data_source"],
+      "properties": {
+        "last_updated": {
+          "type": "string",
+          "format": "date",
+          "description": "最終更新日 (YYYY-MM-DD形式)"
+        },
+        "total_models": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "総モデル数"
+        },
+        "data_source": {
+          "type": "string",
+          "description": "データ収集元"
+        },
+        "collection_range": {
+          "type": "string",
+          "description": "収集範囲の説明"
+        }
+      }
+    },
+    "business_categories": {
+      "type": "object",
+      "description": "業務カテゴリ定義",
+      "patternProperties": {
+        "^[a-z_]+$": {
+          "type": "object",
+          "required": ["name", "key_metrics", "tasks"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "業務カテゴリの日本語名"
+            },
+            "key_metrics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "重視される指標リスト"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "代表的なタスク例"
+            }
+          }
+        }
+      }
+    },
+    "models": {
+      "type": "array",
+      "description": "モデル一覧",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "rank", 
+          "name",
+          "provider",
+          "pricing",
+          "business_categories",
+          "category_ratings",
+          "japanese_performance"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "モデルの一意識別子"
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "ランキング順位"
+          },
+          "name": {
+            "type": "string",
+            "description": "モデル名"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "OpenAI", "Google", "Mistral", "DeepSeek", "xAI", 
+              "Anthropic", "Qwen", "Z.AI", "Tencent", "MoonshotAI", 
+              "Morph", "Baidu", "TheDrummer", "Inception", "MiniMax",
+              "Kimi", "TNG", "Bytedance", "Switchpoint", "Venice",
+              "Horizon"
+            ],
+            "description": "プロバイダー名"
+          },
+          "parameters": {
+            "type": "string",
+            "description": "パラメータ数（例: 120B, N/A等）"
+          },
+          "context_length": {
+            "type": "string",
+            "description": "コンテキスト長（例: 128K, 1M等）"
+          },
+          "pricing": {
+            "type": "object",
+            "required": ["input_price", "output_price", "currency", "unit", "free"],
+            "properties": {
+              "input_price": {
+                "type": "number",
+                "minimum": 0,
+                "description": "入力価格"
+              },
+              "output_price": {
+                "type": "number", 
+                "minimum": 0,
+                "description": "出力価格"
+              },
+              "currency": {
+                "type": "string",
+                "enum": ["USD", "JPY"],
+                "description": "通貨"
+              },
+              "unit": {
+                "type": "string",
+                "default": "1M tokens",
+                "description": "価格単位"
+              },
+              "free": {
+                "type": "boolean",
+                "description": "無料モデルかどうか"
+              }
+            }
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "主要機能・特徴"
+          },
+          "business_categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "customer_support", "sales_email", "marketing_content",
+                "software_development", "data_analysis", "knowledge_search",
+                "legal_document", "finance_planning", "hr_recruitment", 
+                "training_elearning", "meeting_memo", "multilingual",
+                "creative_design", "supply_chain", "it_operation"
+              ]
+            },
+            "description": "適用可能な業務カテゴリリスト"
+          },
+          "category_ratings": {
+            "type": "object",
+            "description": "業務カテゴリ別評価（1-5スケール）",
+            "patternProperties": {
+              "^(customer_support|sales_email|marketing_content|software_development|data_analysis|knowledge_search|legal_document|finance_planning|hr_recruitment|training_elearning|meeting_memo|multilingual|creative_design|supply_chain|it_operation)$": {
+                "type": "number",
+                "minimum": 1.0,
+                "maximum": 5.0,
+                "description": "業務カテゴリでの適性評価"
+              }
+            }
+          },
+          "japanese_performance": {
+            "type": "number",
+            "minimum": 1.0,
+            "maximum": 5.0,
+            "description": "日本語性能評価（1-5スケール）"
+          },
+          "multimodal": {
+            "type": "boolean",
+            "default": false,
+            "description": "マルチモーダル対応かどうか"
+          },
+          "release_date": {
+            "type": "string",
+            "format": "date",
+            "description": "リリース日 (YYYY-MM-DD形式)"
+          },
+          "last_updated": {
+            "type": "string",
+            "format": "date",
+            "description": "情報最終更新日"
+          }
+        }
+      }
+    }
+  }
+}

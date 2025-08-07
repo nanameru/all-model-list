@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本のLLM活用ガイド - モデル比較表</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .filter-group label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        #modelsTable {
+            width: 100% !important;
+        }
+        .business-categories {
+            font-size: 12px;
+        }
+        .category-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 6px;
+            border-radius: 12px;
+            margin: 1px;
+            display: inline-block;
+            font-size: 10px;
+        }
+        .price-free {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .price-low {
+            color: #2196f3;
+        }
+        .price-medium {
+            color: #ff9800;
+        }
+        .price-high {
+            color: #f44336;
+        }
+        .rating {
+            color: #ff9800;
+        }
+        .provider-badge {
+            background: #f5f5f5;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 日本のLLM活用ガイド</h1>
+        <p class="subtitle">業務カテゴリ別モデル比較表 - 51個のLLMから最適なモデルを見つけよう</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalModels">51</div>
+                <div>総モデル数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="freeModels">11</div>
+                <div>無料モデル</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="businessCategories">15</div>
+                <div>業務カテゴリ</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>プロバイダー</label>
+                <select id="provider-filter">
+                    <option value="">全プロバイダー</option>
+                    <option value="OpenAI">OpenAI</option>
+                    <option value="Google">Google</option>
+                    <option value="Mistral">Mistral</option>
+                    <option value="DeepSeek">DeepSeek</option>
+                    <option value="xAI">xAI</option>
+                    <option value="Anthropic">Anthropic</option>
+                    <option value="Qwen">Qwen</option>
+                    <option value="Z.AI">Z.AI</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>価格帯</label>
+                <select id="price-filter">
+                    <option value="">全価格帯</option>
+                    <option value="free">無料</option>
+                    <option value="low">低価格 (~$0.10/M)</option>
+                    <option value="medium">中価格 ($0.10-1.00/M)</option>
+                    <option value="high">高価格 ($1.00+/M)</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>業務カテゴリ</label>
+                <select id="business-category-filter">
+                    <option value="">全業務カテゴリ</option>
+                    <option value="customer_support">顧客サポート</option>
+                    <option value="sales_email">営業メール</option>
+                    <option value="marketing_content">マーケティング</option>
+                    <option value="software_development">開発支援</option>
+                    <option value="data_analysis">データ分析</option>
+                    <option value="knowledge_search">ナレッジ検索</option>
+                    <option value="legal_document">法務文書</option>
+                    <option value="finance_planning">財務企画</option>
+                    <option value="hr_recruitment">人事採用</option>
+                    <option value="training_elearning">研修教育</option>
+                    <option value="meeting_memo">会議メモ</option>
+                    <option value="multilingual">多言語</option>
+                    <option value="creative_design">クリエイティブ</option>
+                    <option value="supply_chain">サプライチェーン</option>
+                    <option value="it_operation">IT運用</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>重視指標</label>
+                <select id="priority-filter">
+                    <option value="">すべて</option>
+                    <option value="cost">コスト重視</option>
+                    <option value="performance">性能重視</option>
+                    <option value="speed">速度重視</option>
+                    <option value="accuracy">精度重視</option>
+                </select>
+            </div>
+        </div>
+
+        <table id="modelsTable" class="display responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>順位</th>
+                    <th>モデル名</th>
+                    <th>プロバイダー</th>
+                    <th>入力価格</th>
+                    <th>出力価格</th>
+                    <th>適用業務カテゴリ</th>
+                    <th>日本語評価</th>
+                    <th>コンテキスト長</th>
+                    <th>特徴</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        // モデルデータ
+        const modelsData = [
+            {
+                rank: 1,
+                name: "OpenAI: gpt-oss-120b",
+                provider: "OpenAI",
+                input_price: 0.20,
+                output_price: 0.80,
+                business_categories: ["customer_support", "sales_email", "data_analysis", "knowledge_search", "it_operation"],
+                japanese_rating: 4.3,
+                context_length: "128K",
+                features: ["高推論", "エージェント"],
+                free: false
+            },
+            {
+                rank: 2,
+                name: "OpenAI: gpt-oss-20b (free)",
+                provider: "OpenAI",
+                input_price: 0,
+                output_price: 0,
+                business_categories: ["customer_support", "sales_email", "marketing_content", "training_elearning"],
+                japanese_rating: 3.6,
+                context_length: "128K",
+                features: ["完全無料"],
+                free: true
+            },
+            {
+                rank: 21,
+                name: "Mistral: Devstral Medium",
+                provider: "Mistral",
+                input_price: 0.40,
+                output_price: 2.00,
+                business_categories: ["software_development", "it_operation", "data_analysis"],
+                japanese_rating: 3.8,
+                context_length: "131K",
+                features: ["高性能コード"],
+                free: false
+            },
+            {
+                rank: 51,
+                name: "DeepSeek: R1 0528 (free)",
+                provider: "DeepSeek",
+                input_price: 0,
+                output_price: 0,
+                business_categories: ["software_development", "data_analysis", "it_operation", "knowledge_search"],
+                japanese_rating: 4.0,
+                context_length: "164K",
+                features: ["高性能無料", "推論特化"],
+                free: true
+            }
+        ];
+
+        // 業務カテゴリ名のマッピング
+        const categoryNames = {
+            "customer_support": "顧客サポート",
+            "sales_email": "営業メール",
+            "marketing_content": "マーケティング",
+            "software_development": "開発支援",
+            "data_analysis": "データ分析",
+            "knowledge_search": "ナレッジ検索",
+            "legal_document": "法務文書",
+            "finance_planning": "財務企画",
+            "hr_recruitment": "人事採用",
+            "training_elearning": "研修教育",
+            "meeting_memo": "会議メモ",
+            "multilingual": "多言語",
+            "creative_design": "クリエイティブ",
+            "supply_chain": "サプライチェーン",
+            "it_operation": "IT運用"
+        };
+
+        function formatPrice(price) {
+            if (price === 0) {
+                return '<span class="price-free">無料</span>';
+            } else if (price < 0.10) {
+                return '<span class="price-low">$' + price + '/M</span>';
+            } else if (price < 1.00) {
+                return '<span class="price-medium">$' + price + '/M</span>';
+            } else {
+                return '<span class="price-high">$' + price + '/M</span>';
+            }
+        }
+
+        function formatBusinessCategories(categories) {
+            return categories.map(cat => 
+                '<span class="category-tag">' + categoryNames[cat] + '</span>'
+            ).join(' ');
+        }
+
+        function formatRating(rating) {
+            const stars = '★'.repeat(Math.floor(rating)) + '☆'.repeat(5 - Math.floor(rating));
+            return '<span class="rating">' + stars + ' ' + rating + '</span>';
+        }
+
+        function formatProvider(provider) {
+            return '<span class="provider-badge">' + provider + '</span>';
+        }
+
+        // DataTableの初期化
+        $(document).ready(function() {
+            const table = $('#modelsTable').DataTable({
+                data: modelsData,
+                responsive: true,
+                pageLength: 25,
+                order: [[0, 'asc']],
+                columns: [
+                    { data: 'rank' },
+                    { data: 'name' },
+                    { 
+                        data: 'provider',
+                        render: function(data, type, row) {
+                            if (type === 'display') {
+                                return formatProvider(data);
+                            }
+                            return data;
+                        }
+                    },
+                    { 
+                        data: 'input_price',
+                        render: function(data, type, row) {
+                            if (type === 'display') {
+                                return formatPrice(data);
+                            }
+                            return data;
+                        }
+                    },
+                    { 
+                        data: 'output_price',
+                        render: function(data, type, row) {
+                            if (type === 'display') {
+                                return formatPrice(data);
+                            }
+                            return data;
+                        }
+                    },
+                    { 
+                        data: 'business_categories',
+                        render: function(data, type, row) {
+                            if (type === 'display') {
+                                return formatBusinessCategories(data);
+                            }
+                            return data.join(', ');
+                        }
+                    },
+                    { 
+                        data: 'japanese_rating',
+                        render: function(data, type, row) {
+                            if (type === 'display') {
+                                return formatRating(data);
+                            }
+                            return data;
+                        }
+                    },
+                    { data: 'context_length' },
+                    { 
+                        data: 'features',
+                        render: function(data, type, row) {
+                            return data.join(', ');
+                        }
+                    }
+                ],
+                language: {
+                    "lengthMenu": "_MENU_ 件表示",
+                    "zeroRecords": "該当するモデルが見つかりません",
+                    "info": "_START_ から _END_ まで（全 _TOTAL_ 件）",
+                    "infoEmpty": "0 件",
+                    "infoFiltered": "（全 _MAX_ 件からフィルタリング）",
+                    "search": "検索:",
+                    "paginate": {
+                        "first": "最初",
+                        "last": "最後",
+                        "next": "次",
+                        "previous": "前"
+                    }
+                }
+            });
+
+            // フィルター機能
+            $('#provider-filter').on('change', function() {
+                const value = this.value;
+                table.column(2).search(value).draw();
+            });
+
+            $('#price-filter').on('change', function() {
+                const value = this.value;
+                table.column(3).search(value === 'free' ? '無料' : value).draw();
+            });
+
+            $('#business-category-filter').on('change', function() {
+                const value = this.value;
+                if (value) {
+                    table.column(5).search(categoryNames[value]).draw();
+                } else {
+                    table.column(5).search('').draw();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
